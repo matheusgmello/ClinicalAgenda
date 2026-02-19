@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface ListarConsultasUseCase {
 
-    List<Consulta> executar();
+    List<Consulta> execute();
 }

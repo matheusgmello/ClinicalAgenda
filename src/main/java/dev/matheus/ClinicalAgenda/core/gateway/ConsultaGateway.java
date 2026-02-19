@@ -6,9 +6,9 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ConsultaGateway {
-    Consulta agendar(Consulta consulta);
-    List<Consulta> listarTodas();
-    Optional<Consulta> buscarPorIdentificador(String identificador);
+    Consulta agendarConsulta(Consulta consulta);
+    List<Consulta> listarTodasConsultas();
+    Optional<Consulta> buscarConsultaPorIdentificador(String identificador);
     boolean existePorIdentificador(String identificador);
-    void excluir(String identificador);
+    void cancelarConsulta(String identificador);
 }
