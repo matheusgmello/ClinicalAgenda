@@ -5,6 +5,7 @@ import dev.matheus.ClinicalAgenda.core.gateway.ConsultaGateway;
 import dev.matheus.ClinicalAgenda.infra.mapper.ConsultaEntityMapper;
 import dev.matheus.ClinicalAgenda.infra.persistence.ConsultaEntity;
 import dev.matheus.ClinicalAgenda.infra.persistence.ConsultaRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -46,6 +47,7 @@ public class ConsultaRepositoryGateway implements ConsultaGateway {
 
 
     @Override
+    @Transactional
     public void cancelarConsulta(String identificador) {
         consultaRepository.deleteByIdentificador(identificador);
     }
