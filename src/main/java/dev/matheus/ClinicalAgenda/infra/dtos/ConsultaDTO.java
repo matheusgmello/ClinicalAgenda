@@ -5,6 +5,7 @@ import dev.matheus.ClinicalAgenda.core.enums.TipoConsulta;
 import java.time.LocalDateTime;
 
 public record ConsultaDTO(
+        Long id,
         String pacienteNome,
         String descricaoSintomas,
         String identificador,
