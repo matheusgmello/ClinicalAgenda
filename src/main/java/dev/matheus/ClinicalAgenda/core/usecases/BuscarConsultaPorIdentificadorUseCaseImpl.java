@@ -2,6 +2,7 @@ package dev.matheus.ClinicalAgenda.core.usecases;
 
 import dev.matheus.ClinicalAgenda.core.entities.Consulta;
 import dev.matheus.ClinicalAgenda.core.gateway.ConsultaGateway;
+import dev.matheus.ClinicalAgenda.infra.exceptions.ConsultaNotFoundException;
 
 public class BuscarConsultaPorIdentificadorUseCaseImpl implements BuscarConsultaPorIdentificadorUseCase {
 
@@ -14,6 +15,6 @@ public class BuscarConsultaPorIdentificadorUseCaseImpl implements BuscarConsulta
     @Override
     public Consulta execute(String identificador) {
         return consultaGateway.buscarConsultaPorIdentificador(identificador)
-                .orElseThrow(() -> new RuntimeException("Consulta não encontrada."));
+                .orElseThrow(() -> new ConsultaNotFoundException("Consulta não encontrada."));
     }
 }

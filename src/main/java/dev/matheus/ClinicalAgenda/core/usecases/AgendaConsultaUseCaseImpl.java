@@ -2,6 +2,8 @@ package dev.matheus.ClinicalAgenda.core.usecases;
 
 import dev.matheus.ClinicalAgenda.core.entities.Consulta;
 import dev.matheus.ClinicalAgenda.core.gateway.ConsultaGateway;
+import dev.matheus.ClinicalAgenda.infra.exceptions.ConsultaDataInvalidaException;
+import dev.matheus.ClinicalAgenda.infra.exceptions.ConsultaDuplicadaException;
 
 public class AgendaConsultaUseCaseImpl implements AgendaConsultaUseCase {
 
@@ -14,10 +16,10 @@ public class AgendaConsultaUseCaseImpl implements AgendaConsultaUseCase {
     @Override
     public Consulta execute(Consulta consulta) {
         if (consulta.dataInicio().isAfter(consulta.dataFim())) {
-            throw new RuntimeException("Data de início não pode ser posterior ao fim.");
+            throw new ConsultaDataInvalidaException("Data de início não pode ser posterior ao fim.");
         }
         if (consultaGateway.existePorIdentificador(consulta.identificador())) {
-            throw new IllegalArgumentException("Já existe uma consulta com o mesmo identificador.");
+            throw new ConsultaDuplicadaException("Já existe uma consulta com o mesmo identificador.");
         }
         return consultaGateway.agendarConsulta(consulta);
     }
