@@ -28,4 +28,9 @@ public class BeanConfiguration {
         return new CancelarConsultaUseCaseImpl(consultaGateway);
     }
 
+    @Bean
+    public AlterarConsultaUseCase alterarConsultaUseCase(ConsultaGateway consultaGateway) {
+        return new AlterarConsultaUseCaseImpl(consultaGateway);
+    }
+
 }
