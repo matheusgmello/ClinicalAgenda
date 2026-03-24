@@ -93,8 +93,9 @@ class ConsultaControllerTest {
     @DisplayName("Deve buscar por identificador")
     void deveBuscarPorIdentificador() {
         when(buscarConsultaUseCase.execute("CONS-2026-001")).thenReturn(consulta);
+        when(consultaDTOMapper.toDTO(any())).thenReturn(consultaDTO);
 
-        ResponseEntity<Consulta> resposta = consultaController.buscarPorIdentificador("CONS-2026-001");
+        ResponseEntity<ConsultaDTO> resposta = consultaController.buscarPorIdentificador("CONS-2026-001");
 
         assertEquals(200, resposta.getStatusCode().value());
         assertNotNull(resposta.getBody());

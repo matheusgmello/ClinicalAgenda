@@ -87,9 +87,9 @@ public class ConsultaController {
 
     @GetMapping("/listar/{identificador}")
     @Operation(summary = "Buscar consulta por identificador", description = "Retorna os detalhes de uma consulta específica através do seu código único.")
-    public ResponseEntity<Consulta> buscarPorIdentificador(@PathVariable String identificador) {
+    public ResponseEntity<ConsultaDTO> buscarPorIdentificador(@PathVariable String identificador) {
         Consulta consulta = buscarConsultaUseCase.execute(identificador);
-        return ResponseEntity.ok(consulta);
+        return ResponseEntity.ok(consultaDTOMapper.toDTO(consulta));
     }
 
     @DeleteMapping("/cancelar/{identificador}")
