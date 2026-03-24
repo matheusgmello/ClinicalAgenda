@@ -51,4 +51,28 @@ public class ConsultaRepositoryGateway implements ConsultaGateway {
     public void cancelarConsulta(String identificador) {
         consultaRepository.deleteByIdentificador(identificador);
     }
+
+    @Override
+    public long contarConsultasPorPrefixo(String prefixo) {
+        return consultaRepository.contarPorIdentificadorIniciandoCom(prefixo);
+    }
+
+    @Override
+    @Transactional
+    public Consulta atualizarConsulta(Consulta consulta) {
+        ConsultaEntity entity = consultaRepository.findByIdentificador(consulta.identificador())
+                .orElseThrow(() -> new RuntimeException("Consulta não encontrada com o identificador: " + consulta.identificador()));
+        
+        entity.setPacienteNome(consulta.pacienteNome());
+        entity.setDescricaoSintomas(consulta.descricaoSintomas());
+        entity.setDataInicio(consulta.dataInicio());
+        entity.setDataFim(consulta.dataFim());
+        entity.setConsultorio(consulta.consultorio());
+        entity.setCrmMedico(consulta.crmMedico());
+        entity.setImgReceitaUrl(consulta.imgReceitaUrl());
+        entity.setTipo(consulta.tipo());
+
+        ConsultaEntity atualizada = consultaRepository.save(entity);
+        return consultaEntityMapper.toDomain(atualizada);
+    }
 }

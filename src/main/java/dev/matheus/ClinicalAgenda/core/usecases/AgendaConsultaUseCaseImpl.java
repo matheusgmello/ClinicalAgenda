@@ -23,9 +23,29 @@ public class AgendaConsultaUseCaseImpl implements AgendaConsultaUseCase {
         if (consulta.dataInicio().isAfter(consulta.dataFim())) {
             throw new ConsultaDataInvalidaException("Data de início não pode ser posterior ao fim.");
         }
-        if (consultaGateway.existePorIdentificador(consulta.identificador())) {
-            throw new ConsultaDuplicadaException("Já existe uma consulta com o mesmo identificador.");
-        }
-        return consultaGateway.agendarConsulta(consulta);
+
+        String identificador = gerarNovoIdentificador();
+
+        Consulta novaConsulta = new Consulta(
+                consulta.id(),
+                consulta.pacienteNome(),
+                consulta.descricaoSintomas(),
+                identificador,
+                consulta.dataInicio(),
+                consulta.dataFim(),
+                consulta.consultorio(),
+                consulta.crmMedico(),
+                consulta.imgReceitaUrl(),
+                consulta.tipo()
+        );
+
+        return consultaGateway.agendarConsulta(novaConsulta);
+    }
+
+    private String gerarNovoIdentificador() {
+        int anoAtual = LocalDateTime.now().getYear();
+        String prefixo = "CONS-" + anoAtual + "-";
+        long totalNoAno = consultaGateway.contarConsultasPorPrefixo(prefixo);
+        return String.format("%s%03d", prefixo, totalNoAno + 1);
     }
 }

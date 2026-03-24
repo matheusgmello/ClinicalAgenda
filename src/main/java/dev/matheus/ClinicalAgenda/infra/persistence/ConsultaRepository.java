@@ -3,6 +3,8 @@ package dev.matheus.ClinicalAgenda.infra.persistence;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
@@ -17,4 +19,7 @@ public interface ConsultaRepository extends JpaRepository<ConsultaEntity, Long> 
     @Transactional
     @Modifying
     void deleteByIdentificador(String identificador);
+
+    @Query("SELECT COUNT(c) FROM ConsultaEntity c WHERE c.identificador LIKE :prefixo%")
+    long contarPorIdentificadorIniciandoCom(@Param("prefixo") String prefixo);
 }

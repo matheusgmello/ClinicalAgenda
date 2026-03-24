@@ -11,4 +11,6 @@ public interface ConsultaGateway {
     Optional<Consulta> buscarConsultaPorIdentificador(String identificador);
     boolean existePorIdentificador(String identificador);
     void cancelarConsulta(String identificador);
+    long contarConsultasPorPrefixo(String prefixo);
+    Consulta atualizarConsulta(Consulta consulta);
 }
