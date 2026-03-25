@@ -125,7 +125,6 @@ curl -X POST http://localhost:8080/api/v1/consultas/agendar \
   -d '{
     "pacienteNome": "João Silva",
     "descricaoSintomas": "Dor de cabeça e febre",
-    "identificador": "123e4567-e89b-12d3-a456-426614174000",
     "dataInicio": "2026-03-01T10:30:00",
     "dataFim": "2026-03-01T10:50:00",
     "consultorio": "Sala 12",
