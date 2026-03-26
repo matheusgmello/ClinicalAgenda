@@ -75,4 +75,14 @@ public class ConsultaRepositoryGateway implements ConsultaGateway {
         ConsultaEntity atualizada = consultaRepository.save(entity);
         return consultaEntityMapper.toDomain(atualizada);
     }
+
+    @Override
+    public boolean existeConflitoMedico(String crmMedico, java.time.LocalDateTime inicio, java.time.LocalDateTime fim, String identificadorExcluido) {
+        return consultaRepository.existeConflitoMedico(crmMedico, inicio, fim, identificadorExcluido);
+    }
+
+    @Override
+    public boolean existeConflitoConsultorio(String consultorio, java.time.LocalDateTime inicio, java.time.LocalDateTime fim, String identificadorExcluido) {
+        return consultaRepository.existeConflitoConsultorio(consultorio, inicio, fim, identificadorExcluido);
+    }
 }
