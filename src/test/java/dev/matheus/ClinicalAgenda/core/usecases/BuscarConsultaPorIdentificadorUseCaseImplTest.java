@@ -2,7 +2,7 @@ package dev.matheus.ClinicalAgenda.core.usecases;
 
 import dev.matheus.ClinicalAgenda.core.entities.Consulta;
 import dev.matheus.ClinicalAgenda.core.gateway.ConsultaGateway;
-import dev.matheus.ClinicalAgenda.infra.exceptions.ConsultaNotFoundException;
+import dev.matheus.ClinicalAgenda.core.exceptions.ConsultaNotFoundException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

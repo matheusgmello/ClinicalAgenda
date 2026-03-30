@@ -8,18 +8,18 @@ import org.springframework.stereotype.Component;
 public class ConsultaEntityMapper {
 
     public ConsultaEntity toEntity(Consulta consulta) {
-        return new ConsultaEntity(
-                consulta.id(),
-                consulta.pacienteNome(),
-                consulta.descricaoSintomas(),
-                consulta.identificador(),
-                consulta.dataInicio(),
-                consulta.dataFim(),
-                consulta.consultorio(),
-                consulta.crmMedico(),
-                consulta.imgReceitaUrl(),
-                consulta.tipo()
-        );
+        ConsultaEntity entity = new ConsultaEntity();
+        entity.setId(consulta.id());
+        entity.setPacienteNome(consulta.pacienteNome());
+        entity.setDescricaoSintomas(consulta.descricaoSintomas());
+        entity.setIdentificador(consulta.identificador());
+        entity.setDataInicio(consulta.dataInicio());
+        entity.setDataFim(consulta.dataFim());
+        entity.setConsultorio(consulta.consultorio());
+        entity.setCrmMedico(consulta.crmMedico());
+        entity.setImgReceitaUrl(consulta.imgReceitaUrl());
+        entity.setTipo(consulta.tipo());
+        return entity;
     }
 
     public Consulta toDomain(ConsultaEntity consultaEntity) {

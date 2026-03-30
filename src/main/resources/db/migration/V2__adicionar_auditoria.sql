@@ -1,0 +1,2 @@
+ALTER TABLE Consultas ADD COLUMN created_at TIMESTAMP;
+ALTER TABLE Consultas ADD COLUMN updated_at TIMESTAMP;

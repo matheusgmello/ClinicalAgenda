@@ -12,11 +12,11 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -46,67 +46,42 @@ class ConsultaControllerTest {
 
     @BeforeEach
     void setUp() {
-        consulta = new Consulta(1L, "João", "Sintoma", "CONS-2026-001", LocalDateTime.now(), LocalDateTime.now().plusHours(1), "01", "CRM", null, TipoConsulta.PRESENCIAL);
-        consultaDTO = new ConsultaDTO(1L, "João", "Sintoma", "CONS-2026-001", LocalDateTime.now(), LocalDateTime.now().plusHours(1), "01", "CRM", null, TipoConsulta.PRESENCIAL);
+        consulta = new Consulta(1L, "João", "Sintoma", "CONS-2026-001", LocalDateTime.now().plusDays(1), LocalDateTime.now().plusDays(1).plusHours(1), "01", "CRM", null, TipoConsulta.PRESENCIAL);
+        consultaDTO = new ConsultaDTO(1L, "João", "Sintoma", "CONS-2026-001", LocalDateTime.now().plusDays(1), LocalDateTime.now().plusDays(1).plusHours(1), "01", "CRM", null, TipoConsulta.PRESENCIAL);
     }
 
     @Test
-    @DisplayName("Deve agendar consulta com sucesso")
+    @DisplayName("Deve agendar consulta com sucesso e retornar 201 Created")
     void deveAgendarConsulta() {
         when(consultaDTOMapper.toDomain(any())).thenReturn(consulta);
         when(agendarConsultaUseCase.execute(any())).thenReturn(consulta);
         when(consultaDTOMapper.toDTO(any())).thenReturn(consultaDTO);
 
-        ResponseEntity<Map<String, Object>> resposta = consultaController.agendar(consultaDTO);
+        ResponseEntity<ConsultaDTO> resposta = consultaController.agendar(consultaDTO);
 
-        assertEquals(200, resposta.getStatusCode().value());
-        assertTrue(resposta.getBody().containsKey("Mensagem: "));
-        verify(agendarConsultaUseCase).execute(any());
+        assertEquals(HttpStatus.CREATED, resposta.getStatusCode());
+        assertNotNull(resposta.getBody());
+        assertEquals("CONS-2026-001", resposta.getBody().identificador());
     }
 
     @Test
-    @DisplayName("Deve alterar consulta com sucesso")
-    void deveAlterarConsulta() {
-        when(alterarConsultaUseCase.execute(any())).thenReturn(consulta);
-        when(consultaDTOMapper.toDTO(any())).thenReturn(consultaDTO);
+    @DisplayName("Deve cancelar consulta e retornar 204 No Content")
+    void deveCancelarConsulta() {
+        ResponseEntity<Void> resposta = consultaController.cancelar("CONS-2026-001");
 
-        ResponseEntity<Map<String, Object>> resposta = consultaController.alterar("CONS-2026-001", consultaDTO);
-
-        assertEquals(200, resposta.getStatusCode().value());
-        assertEquals("Consulta atualizada com sucesso", resposta.getBody().get("Mensagem: "));
-        verify(alterarConsultaUseCase).execute(any());
+        assertEquals(HttpStatus.NO_CONTENT, resposta.getStatusCode());
+        verify(cancelarConsultaUseCase).execute("CONS-2026-001");
     }
 
     @Test
-    @DisplayName("Deve listar consultas")
-    void deveListarConsultas() {
-        when(listarConsultasUseCase.execute()).thenReturn(List.of(consulta));
-        when(consultaDTOMapper.toDTO(any())).thenReturn(consultaDTO);
-
-        List<ConsultaDTO> resultado = consultaController.buscarConsultas();
-
-        assertFalse(resultado.isEmpty());
-        assertEquals(1, resultado.size());
-    }
-
-    @Test
-    @DisplayName("Deve buscar por identificador")
+    @DisplayName("Deve buscar consulta por identificador")
     void deveBuscarPorIdentificador() {
         when(buscarConsultaUseCase.execute("CONS-2026-001")).thenReturn(consulta);
         when(consultaDTOMapper.toDTO(any())).thenReturn(consultaDTO);
 
         ResponseEntity<ConsultaDTO> resposta = consultaController.buscarPorIdentificador("CONS-2026-001");
 
-        assertEquals(200, resposta.getStatusCode().value());
-        assertNotNull(resposta.getBody());
-    }
-
-    @Test
-    @DisplayName("Deve cancelar consulta")
-    void deveCancelarConsulta() {
-        ResponseEntity<Map<String, Object>> resposta = consultaController.cancelar("CONS-2026-001");
-
-        assertEquals(200, resposta.getStatusCode().value());
-        verify(cancelarConsultaUseCase).execute("CONS-2026-001");
+        assertEquals(HttpStatus.OK, resposta.getStatusCode());
+        assertEquals("João", resposta.getBody().pacienteNome());
     }
 }

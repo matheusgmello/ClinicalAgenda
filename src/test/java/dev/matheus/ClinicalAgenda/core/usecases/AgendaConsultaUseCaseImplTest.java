@@ -3,7 +3,7 @@ package dev.matheus.ClinicalAgenda.core.usecases;
 import dev.matheus.ClinicalAgenda.core.entities.Consulta;
 import dev.matheus.ClinicalAgenda.core.enums.TipoConsulta;
 import dev.matheus.ClinicalAgenda.core.gateway.ConsultaGateway;
-import dev.matheus.ClinicalAgenda.infra.exceptions.ConsultaDataInvalidaException;
+import dev.matheus.ClinicalAgenda.core.exceptions.ConsultaDataInvalidaException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

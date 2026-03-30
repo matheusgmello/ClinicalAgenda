@@ -6,12 +6,12 @@ import dev.matheus.ClinicalAgenda.infra.dtos.ConsultaDTO;
 import dev.matheus.ClinicalAgenda.infra.mapper.ConsultaDTOMapper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
@@ -27,7 +27,8 @@ public class ConsultaController {
     private final ConsultaDTOMapper consultaDTOMapper;
 
     public ConsultaController(AgendaConsultaUseCase agendarConsultaUseCase,
-                            ListarConsultasUseCase listarConsultasUseCase, BuscarConsultaPorIdentificadorUseCase buscarConsultaUseCase,
+                            ListarConsultasUseCase listarConsultasUseCase, 
+                            BuscarConsultaPorIdentificadorUseCase buscarConsultaUseCase,
                             CancelarConsultaUseCase cancelarConsultaUseCase,
                             AlterarConsultaUseCase alterarConsultaUseCase,
                             ConsultaDTOMapper consultaDTOMapper) {
@@ -41,19 +42,14 @@ public class ConsultaController {
 
     @PostMapping("/agendar")
     @Operation(summary = "Agendar uma nova consulta", description = "Cria um novo agendamento e gera automaticamente o identificador único.")
-    public ResponseEntity<Map<String, Object>> agendar(@RequestBody ConsultaDTO consultaDto) {
+    public ResponseEntity<ConsultaDTO> agendar(@Valid @RequestBody ConsultaDTO consultaDto) {
         Consulta novaConsulta = agendarConsultaUseCase.execute(consultaDTOMapper.toDomain(consultaDto));
-
-        Map<String, Object> resposta = new HashMap<>();
-        resposta.put("Mensagem: ", "A consulta foi agendada com sucesso no banco de dados");
-        resposta.put("Dados da consulta: ", consultaDTOMapper.toDTO(novaConsulta));
-
-        return ResponseEntity.ok(resposta);
+        return ResponseEntity.status(HttpStatus.CREATED).body(consultaDTOMapper.toDTO(novaConsulta));
     }
 
     @PutMapping("/alterar/{identificador}")
     @Operation(summary = "Alterar dados de uma consulta", description = "Atualiza informações como consultório ou descrição de sintomas de uma consulta existente.")
-    public ResponseEntity<Map<String, Object>> alterar(@PathVariable String identificador, @RequestBody ConsultaDTO consultaDto) {
+    public ResponseEntity<ConsultaDTO> alterar(@PathVariable String identificador, @Valid @RequestBody ConsultaDTO consultaDto) {
         Consulta consultaParaAlterar = new Consulta(
                 null,
                 consultaDto.pacienteNome(),
@@ -68,21 +64,17 @@ public class ConsultaController {
         );
 
         Consulta consultaAtualizada = alterarConsultaUseCase.execute(consultaParaAlterar);
-
-        Map<String, Object> resposta = new HashMap<>();
-        resposta.put("Mensagem: ", "Consulta atualizada com sucesso");
-        resposta.put("Dados da consulta: ", consultaDTOMapper.toDTO(consultaAtualizada));
-
-        return ResponseEntity.ok(resposta);
+        return ResponseEntity.ok(consultaDTOMapper.toDTO(consultaAtualizada));
     }
 
     @GetMapping("/listar")
     @Operation(summary = "Listar todas as consultas", description = "Retorna uma lista com todas as consultas agendadas.")
-    public List<ConsultaDTO> buscarConsultas() {
-        return listarConsultasUseCase.execute()
+    public ResponseEntity<List<ConsultaDTO>> buscarConsultas() {
+        List<ConsultaDTO> consultas = listarConsultasUseCase.execute()
                 .stream()
                 .map(consultaDTOMapper::toDTO)
                 .collect(Collectors.toList());
+        return ResponseEntity.ok(consultas);
     }
 
     @GetMapping("/listar/{identificador}")
@@ -94,16 +86,8 @@ public class ConsultaController {
 
     @DeleteMapping("/cancelar/{identificador}")
     @Operation(summary = "Cancelar uma consulta", description = "Remove o agendamento de uma consulta através do seu código identificador.")
-    public ResponseEntity<Map<String, Object>> cancelar(@PathVariable String identificador) {
+    public ResponseEntity<Void> cancelar(@PathVariable String identificador) {
         cancelarConsultaUseCase.execute(identificador);
-
-        Map<String, Object> resposta = new HashMap<>();
-        resposta.put("Mensagem: ", "Consulta cancelada com sucesso");
-
-        return ResponseEntity.ok(resposta);
+        return ResponseEntity.noContent().build();
     }
-
-
-
-
 }
