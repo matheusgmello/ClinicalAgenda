@@ -1,3 +1,5 @@
+![Preview do Sistema](images/preview.gif)
+
 # ClinicalAgenda
 
 Sistema completo de agendamento de consultas médicas — API REST com Spring Boot e frontend Angular, desenvolvido como projeto de portfólio com foco em boas práticas de engenharia de software.
@@ -322,5 +324,3 @@ O projeto possui pipeline no **GitHub Actions** (`.github/workflows/ci.yml`) que
 3. Publica o relatório JaCoCo como artefato
 
 ---
-
-> Projeto desenvolvido por **Matheus** como portfólio de engenharia de software.
