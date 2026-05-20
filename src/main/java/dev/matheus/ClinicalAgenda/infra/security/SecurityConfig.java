@@ -30,6 +30,8 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/api/v1/auth/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/v1/auth/register").permitAll()
                         .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
+                        .requestMatchers("/actuator/health").permitAll()
+                        .requestMatchers("/actuator/**").authenticated()
                         .requestMatchers(HttpMethod.POST, "/api/v1/consultas/agendar").hasRole("PACIENTE")
                         .requestMatchers(HttpMethod.PUT, "/api/v1/consultas/alterar/**").hasRole("MEDICO")
                         .requestMatchers(HttpMethod.DELETE, "/api/v1/consultas/cancelar/**").hasRole("ADMIN")
