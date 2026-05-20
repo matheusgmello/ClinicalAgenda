@@ -64,6 +64,7 @@ public class ConsultaRepositoryGateway implements ConsultaGateway {
                 .orElseThrow(() -> new RuntimeException("Consulta não encontrada com o identificador: " + consulta.identificador()));
         
         entity.setPacienteNome(consulta.pacienteNome());
+        entity.setPacienteEmail(consulta.pacienteEmail());
         entity.setDescricaoSintomas(consulta.descricaoSintomas());
         entity.setDataInicio(consulta.dataInicio());
         entity.setDataFim(consulta.dataFim());

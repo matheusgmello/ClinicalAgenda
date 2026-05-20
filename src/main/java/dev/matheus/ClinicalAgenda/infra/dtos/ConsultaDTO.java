@@ -2,6 +2,7 @@ package dev.matheus.ClinicalAgenda.infra.dtos;
 
 import dev.matheus.ClinicalAgenda.core.enums.TipoConsulta;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -16,6 +17,11 @@ public record ConsultaDTO(
         @NotBlank(message = "O nome do paciente é obrigatório")
         @Schema(description = "Nome completo do paciente", example = "João da Silva")
         String pacienteNome,
+
+        @Email(message = "O e-mail do paciente deve ser válido")
+        @NotBlank(message = "O e-mail do paciente é obrigatório")
+        @Schema(description = "E-mail do paciente para receber confirmação", example = "joao@email.com")
+        String pacienteEmail,
 
         @NotBlank(message = "A descrição dos sintomas é obrigatória")
         @Schema(description = "Descrição dos sintomas relatados", example = "Dor de cabeça persistente e febre leve")

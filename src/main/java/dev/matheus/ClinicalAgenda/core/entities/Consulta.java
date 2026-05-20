@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 public record Consulta(
         Long id,
         String pacienteNome,
+        String pacienteEmail,
         String descricaoSintomas,
         String identificador,
         LocalDateTime dataInicio,

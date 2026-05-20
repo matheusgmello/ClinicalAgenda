@@ -46,8 +46,8 @@ class ConsultaControllerTest {
 
     @BeforeEach
     void setUp() {
-        consulta = new Consulta(1L, "João", "Sintoma", "CONS-2026-001", LocalDateTime.now().plusDays(1), LocalDateTime.now().plusDays(1).plusHours(1), "01", "CRM", null, TipoConsulta.PRESENCIAL);
-        consultaDTO = new ConsultaDTO(1L, "João", "Sintoma", "CONS-2026-001", LocalDateTime.now().plusDays(1), LocalDateTime.now().plusDays(1).plusHours(1), "01", "CRM", null, TipoConsulta.PRESENCIAL);
+        consulta = new Consulta(1L, "João", "joao@email.com", "Sintoma", "CONS-2026-001", LocalDateTime.now().plusDays(1), LocalDateTime.now().plusDays(1).plusHours(1), "01", "CRM", null, TipoConsulta.PRESENCIAL);
+        consultaDTO = new ConsultaDTO(1L, "João", "joao@email.com", "Sintoma", "CONS-2026-001", LocalDateTime.now().plusDays(1), LocalDateTime.now().plusDays(1).plusHours(1), "01", "CRM", null, TipoConsulta.PRESENCIAL);
     }
 
     @Test

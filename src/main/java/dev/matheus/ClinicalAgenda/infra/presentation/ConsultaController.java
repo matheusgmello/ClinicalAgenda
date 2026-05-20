@@ -53,6 +53,7 @@ public class ConsultaController {
         Consulta consultaParaAlterar = new Consulta(
                 null,
                 consultaDto.pacienteNome(),
+                consultaDto.pacienteEmail(),
                 consultaDto.descricaoSintomas(),
                 identificador,
                 consultaDto.dataInicio(),

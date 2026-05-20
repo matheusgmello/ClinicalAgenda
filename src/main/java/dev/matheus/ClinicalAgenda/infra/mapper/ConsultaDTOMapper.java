@@ -11,6 +11,7 @@ public class ConsultaDTOMapper {
         return new ConsultaDTO(
                 consulta.id(),
                 consulta.pacienteNome(),
+                consulta.pacienteEmail(),
                 consulta.descricaoSintomas(),
                 consulta.identificador(),
                 consulta.dataInicio(),
@@ -19,7 +20,6 @@ public class ConsultaDTOMapper {
                 consulta.crmMedico(),
                 consulta.imgReceitaUrl(),
                 consulta.tipo()
-
         );
     }
 
@@ -27,6 +27,7 @@ public class ConsultaDTOMapper {
         return new Consulta(
                 consultaDTO.id(),
                 consultaDTO.pacienteNome(),
+                consultaDTO.pacienteEmail(),
                 consultaDTO.descricaoSintomas(),
                 consultaDTO.identificador(),
                 consultaDTO.dataInicio(),
@@ -35,7 +36,6 @@ public class ConsultaDTOMapper {
                 consultaDTO.crmMedico(),
                 consultaDTO.imgReceitaUrl(),
                 consultaDTO.tipo()
-
         );
     }
 }

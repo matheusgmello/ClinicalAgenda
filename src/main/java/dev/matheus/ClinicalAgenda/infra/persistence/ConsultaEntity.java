@@ -26,6 +26,9 @@ public class ConsultaEntity {
     @Column(name = "paciente_nome", nullable = false)
     private String pacienteNome;
 
+    @Column(name = "paciente_email")
+    private String pacienteEmail;
+
     @Column(name = "descricao_sintomas")
     private String descricaoSintomas;
 

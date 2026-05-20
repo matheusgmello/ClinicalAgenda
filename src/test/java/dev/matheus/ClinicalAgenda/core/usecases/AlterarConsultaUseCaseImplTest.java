@@ -35,6 +35,7 @@ class AlterarConsultaUseCaseImplTest {
         consultaExistente = new Consulta(
                 1L,
                 "Maria Souza",
+                "maria@email.com",
                 "Dor nas costas",
                 "CONS-2026-001",
                 LocalDateTime.now().plusDays(2),
@@ -73,7 +74,7 @@ class AlterarConsultaUseCaseImplTest {
     void deveLancarExcecaoParaDataPassada() {
         when(consultaGateway.existePorIdentificador(anyString())).thenReturn(true);
         Consulta consultaPassada = new Consulta(
-                1L, "Maria", "Sintoma", "CONS-2026-001",
+                1L, "Maria", "maria@email.com", "Sintoma", "CONS-2026-001",
                 LocalDateTime.now().minusDays(1), LocalDateTime.now().plusHours(1),
                 "01", "CRM", null, TipoConsulta.TELECONSULTA
         );

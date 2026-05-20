@@ -26,6 +26,7 @@ public class AgendaConsultaUseCaseImpl implements AgendaConsultaUseCase {
         Consulta novaConsulta = new Consulta(
                 consulta.id(),
                 consulta.pacienteNome(),
+                consulta.pacienteEmail(),
                 consulta.descricaoSintomas(),
                 identificador,
                 consulta.dataInicio(),

@@ -11,6 +11,7 @@ public class ConsultaEntityMapper {
         ConsultaEntity entity = new ConsultaEntity();
         entity.setId(consulta.id());
         entity.setPacienteNome(consulta.pacienteNome());
+        entity.setPacienteEmail(consulta.pacienteEmail());
         entity.setDescricaoSintomas(consulta.descricaoSintomas());
         entity.setIdentificador(consulta.identificador());
         entity.setDataInicio(consulta.dataInicio());
@@ -26,6 +27,7 @@ public class ConsultaEntityMapper {
         return new Consulta(
                 consultaEntity.getId(),
                 consultaEntity.getPacienteNome(),
+                consultaEntity.getPacienteEmail(),
                 consultaEntity.getDescricaoSintomas(),
                 consultaEntity.getIdentificador(),
                 consultaEntity.getDataInicio(),

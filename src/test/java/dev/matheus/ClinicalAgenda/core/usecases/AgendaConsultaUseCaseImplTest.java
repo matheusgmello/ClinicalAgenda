@@ -34,6 +34,7 @@ class AgendaConsultaUseCaseImplTest {
         consultaValida = new Consulta(
                 null,
                 "João Silva",
+                "joao@email.com",
                 "Dor de cabeça",
                 null,
                 LocalDateTime.now().plusDays(1),
@@ -62,7 +63,7 @@ class AgendaConsultaUseCaseImplTest {
     @DisplayName("Deve lançar exceção ao agendar consulta para data passada")
     void deveLancarExcecaoParaDataPassada() {
         Consulta consultaPassada = new Consulta(
-                null, "João", "Sintoma", null,
+                null, "João", "joao@email.com", "Sintoma", null,
                 LocalDateTime.now().minusDays(1), LocalDateTime.now().plusHours(1),
                 "01", "CRM", null, TipoConsulta.PRESENCIAL
         );
@@ -75,7 +76,7 @@ class AgendaConsultaUseCaseImplTest {
     @DisplayName("Deve lançar exceção quando data fim for anterior à data início")
     void deveLancarExcecaoQuandoDataFimForAnteriorADataInicio() {
         Consulta consultaInvalida = new Consulta(
-                null, "João", "Sintoma", null,
+                null, "João", "joao@email.com", "Sintoma", null,
                 LocalDateTime.now().plusDays(1), LocalDateTime.now().plusDays(1).minusHours(1),
                 "01", "CRM", null, TipoConsulta.PRESENCIAL
         );
