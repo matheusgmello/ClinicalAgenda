@@ -14,13 +14,13 @@ interface NavItem {
   standalone: true,
   imports: [RouterLink, RouterLinkActive],
   template: `
-    <aside class="flex flex-col h-full w-64 bg-bg-secondary border-r border-border">
+    <aside class="flex flex-col h-full w-64 bg-white border-r border-border-subtle shadow-card">
       <!-- Logo -->
-      <div class="px-6 py-6 border-b border-border">
+      <div class="px-6 py-5 border-b border-border-subtle">
         <div class="flex items-center gap-3">
           <div class="w-8 h-8 rounded-lg bg-accent flex items-center justify-center flex-shrink-0">
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-              <path d="M8 2v12M2 8h12" stroke="#06080F" stroke-width="2.5" stroke-linecap="round"/>
+              <path d="M8 2v12M2 8h12" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
             </svg>
           </div>
           <div>
@@ -31,14 +31,14 @@ interface NavItem {
       </div>
 
       <!-- User info -->
-      <div class="px-4 py-4 border-b border-border">
-        <div class="flex items-center gap-3 px-2 py-2.5 rounded-lg bg-bg-elevated">
+      <div class="px-4 py-4 border-b border-border-subtle">
+        <div class="flex items-center gap-3 px-2 py-2.5 rounded-lg bg-bg-secondary">
           <div class="w-8 h-8 rounded-full bg-accent/10 border border-accent/20 flex items-center justify-center flex-shrink-0">
             <span class="font-display text-accent text-xs font-bold">{{ userInitial() }}</span>
           </div>
           <div class="min-w-0">
             <p class="text-text-primary text-xs font-semibold truncate">{{ userEmail() }}</p>
-            <span class="badge-accent text-[10px] px-1.5 py-0.5">{{ roleBadge() }}</span>
+            <span class="badge-accent text-[10px] px-1.5 py-0.5 mt-0.5 inline-block">{{ roleBadge() }}</span>
           </div>
         </div>
       </div>
@@ -49,24 +49,24 @@ interface NavItem {
         @for (item of visibleItems(); track item.route) {
           <a
             [routerLink]="item.route"
-            routerLinkActive="bg-accent/10 text-accent border-accent/20"
+            routerLinkActive="bg-accent/8 text-accent border-accent/20 font-semibold"
             [routerLinkActiveOptions]="{ exact: item.route === '/dashboard' }"
             class="flex items-center gap-3 px-3 py-2.5 rounded-lg mb-0.5 text-text-secondary border border-transparent
-              hover:bg-bg-elevated hover:text-text-primary hover:border-border-subtle
+              hover:bg-bg-elevated hover:text-text-primary
               transition-all duration-200 text-sm font-medium group"
           >
-            <span class="w-5 h-5 flex items-center justify-center flex-shrink-0 opacity-70 group-hover:opacity-100 transition-opacity" [innerHTML]="item.icon"></span>
+            <span class="w-5 h-5 flex items-center justify-center flex-shrink-0 opacity-60 group-hover:opacity-100 transition-opacity" [innerHTML]="item.icon"></span>
             {{ item.label }}
           </a>
         }
       </nav>
 
       <!-- Logout -->
-      <div class="px-3 py-4 border-t border-border">
+      <div class="px-3 py-4 border-t border-border-subtle">
         <button
           (click)="logout()"
           class="flex items-center gap-3 w-full px-3 py-2.5 rounded-lg text-text-muted
-            hover:bg-status-danger/10 hover:text-status-danger
+            hover:bg-red-50 hover:text-status-danger
             transition-all duration-200 text-sm font-medium"
         >
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">

@@ -24,7 +24,7 @@ type RoleOption = { value: 'PACIENTE' | 'MEDICO' | 'ADMIN'; label: string; desc:
           <div class="flex items-center gap-3 mb-6">
             <div class="w-9 h-9 rounded-xl bg-accent flex items-center justify-center">
               <svg width="18" height="18" viewBox="0 0 16 16" fill="none">
-                <path d="M8 2v12M2 8h12" stroke="#06080F" stroke-width="2.5" stroke-linecap="round"/>
+                <path d="M8 2v12M2 8h12" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
               </svg>
             </div>
             <span class="font-display text-text-primary font-semibold">ClinicalAgenda</span>

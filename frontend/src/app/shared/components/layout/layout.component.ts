@@ -7,9 +7,9 @@ import { SidebarComponent } from '../sidebar/sidebar.component';
   standalone: true,
   imports: [RouterOutlet, SidebarComponent],
   template: `
-    <div class="flex h-screen overflow-hidden bg-bg-primary">
+    <div class="flex h-screen overflow-hidden bg-bg-secondary">
       <app-sidebar />
-      <main class="flex-1 overflow-y-auto bg-hero-gradient bg-bg-primary">
+      <main class="flex-1 overflow-y-auto bg-hero-gradient bg-bg-secondary">
         <div class="min-h-full">
           <router-outlet />
         </div>

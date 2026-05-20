@@ -22,7 +22,7 @@ import { AuthService } from '../../../core/services/auth.service';
         <div class="relative flex items-center gap-3 z-10">
           <div class="w-10 h-10 rounded-xl bg-accent flex items-center justify-center">
             <svg width="20" height="20" viewBox="0 0 16 16" fill="none">
-              <path d="M8 2v12M2 8h12" stroke="#06080F" stroke-width="2.5" stroke-linecap="round"/>
+              <path d="M8 2v12M2 8h12" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
             </svg>
           </div>
           <span class="font-display text-text-primary font-semibold text-lg">ClinicalAgenda</span>
@@ -63,7 +63,7 @@ import { AuthService } from '../../../core/services/auth.service';
           <div class="flex items-center gap-3 mb-10 lg:hidden">
             <div class="w-8 h-8 rounded-lg bg-accent flex items-center justify-center">
               <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                <path d="M8 2v12M2 8h12" stroke="#06080F" stroke-width="2.5" stroke-linecap="round"/>
+                <path d="M8 2v12M2 8h12" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
               </svg>
             </div>
             <span class="font-display text-text-primary font-semibold">ClinicalAgenda</span>

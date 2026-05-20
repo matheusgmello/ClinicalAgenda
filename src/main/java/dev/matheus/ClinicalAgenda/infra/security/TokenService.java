@@ -24,6 +24,7 @@ public class TokenService {
             return JWT.create()
                     .withIssuer("clinical-agenda-api")
                     .withSubject(usuario.getLogin())
+                    .withClaim("role", "ROLE_" + usuario.getRole().name())
                     .withExpiresAt(genExpirationDate())
                     .sign(algorithm);
         } catch (JWTCreationException exception) {
