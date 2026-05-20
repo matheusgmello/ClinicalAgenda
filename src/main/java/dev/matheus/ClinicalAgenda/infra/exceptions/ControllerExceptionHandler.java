@@ -3,6 +3,7 @@ package dev.matheus.ClinicalAgenda.infra.exceptions;
 import dev.matheus.ClinicalAgenda.core.exceptions.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -71,6 +72,16 @@ public class ControllerExceptionHandler {
         problemDetail.setProperty("errors", errors);
         problemDetail.setProperty("timestamp", LocalDateTime.now());
         problemDetail.setProperty("errorCode", "CLINICAL-400");
+        return problemDetail;
+    }
+
+    @ExceptionHandler(BadCredentialsException.class)
+    public ProblemDetail handleBadCredentials(BadCredentialsException ex) {
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.UNAUTHORIZED, "Credenciais inválidas.");
+        problemDetail.setTitle("Não autorizado");
+        problemDetail.setType(URI.create("https://clinica.com/erros/nao-autorizado"));
+        problemDetail.setProperty("timestamp", LocalDateTime.now());
+        problemDetail.setProperty("errorCode", "CLINICAL-401");
         return problemDetail;
     }
 
