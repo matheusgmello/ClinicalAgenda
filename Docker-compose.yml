@@ -1,11 +1,48 @@
 services:
   postgres:
-    image: postgres:latest
-    container_name: ClinicalAgenda
+    image: postgres:15
+    container_name: ClinicalAgenda-db
+    env_file: .env
     environment:
-      POSTGRES_DB: ClinicalAgenda
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     ports:
       - "5435:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
     restart: always
+
+  mailhog:
+    image: mailhog/mailhog:latest
+    container_name: ClinicalAgenda-mail
+    ports:
+      - "1025:1025"
+      - "8025:8025"
+    restart: always
+
+  app:
+    build: .
+    container_name: ClinicalAgenda-app
+    env_file: .env
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/${POSTGRES_DB}
+      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER}
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD}
+      JWT_SECRET: ${JWT_SECRET}
+      MAIL_HOST: mailhog
+      MAIL_PORT: 1025
+    ports:
+      - "8080:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: always
+
+volumes:
+  postgres_data:

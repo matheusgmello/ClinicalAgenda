@@ -39,3 +39,6 @@ build/
 
 gemini.md
 claude.md
+
+## Environment
+.env
