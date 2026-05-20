@@ -1,5 +1,6 @@
 package dev.matheus.ClinicalAgenda.infra.presentation;
 
+import dev.matheus.ClinicalAgenda.core.dtos.PaginaResponse;
 import dev.matheus.ClinicalAgenda.core.entities.Consulta;
 import dev.matheus.ClinicalAgenda.core.enums.TipoConsulta;
 import dev.matheus.ClinicalAgenda.core.usecases.*;
@@ -28,7 +29,7 @@ class ConsultaControllerTest {
     @Mock
     private AgendaConsultaUseCase agendarConsultaUseCase;
     @Mock
-    private ListarConsultasUseCase listarConsultasUseCase;
+    private ListarConsultasPaginadasUseCase listarConsultasPaginadasUseCase;
     @Mock
     private BuscarConsultaPorIdentificadorUseCase buscarConsultaUseCase;
     @Mock
@@ -71,6 +72,22 @@ class ConsultaControllerTest {
 
         assertEquals(HttpStatus.NO_CONTENT, resposta.getStatusCode());
         verify(cancelarConsultaUseCase).execute("CONS-2026-001");
+    }
+
+    @Test
+    @DisplayName("Deve listar consultas paginadas")
+    void deveListarConsultasPaginadas() {
+        PaginaResponse<Consulta> paginaConsultas = new PaginaResponse<>(List.of(consulta), 0, 10, 1L, 1);
+        PaginaResponse<ConsultaDTO> paginaDTOs = new PaginaResponse<>(List.of(consultaDTO), 0, 10, 1L, 1);
+
+        when(listarConsultasPaginadasUseCase.execute(0, 10)).thenReturn(paginaConsultas);
+        when(consultaDTOMapper.toDTO(any())).thenReturn(consultaDTO);
+
+        ResponseEntity<PaginaResponse<ConsultaDTO>> resposta = consultaController.buscarConsultas(0, 10);
+
+        assertEquals(HttpStatus.OK, resposta.getStatusCode());
+        assertEquals(1, resposta.getBody().conteudo().size());
+        assertEquals(1L, resposta.getBody().totalElementos());
     }
 
     @Test

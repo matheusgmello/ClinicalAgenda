@@ -1,5 +1,6 @@
 package dev.matheus.ClinicalAgenda.core.gateway;
 
+import dev.matheus.ClinicalAgenda.core.dtos.PaginaResponse;
 import dev.matheus.ClinicalAgenda.core.entities.Consulta;
 
 import java.time.LocalDateTime;
@@ -9,6 +10,7 @@ import java.util.Optional;
 public interface ConsultaGateway {
     Consulta agendarConsulta(Consulta consulta);
     List<Consulta> listarTodasConsultas();
+    PaginaResponse<Consulta> listarPaginado(int pagina, int tamanho);
     boolean existePorIdentificador(String identificador);
     Optional<Consulta> buscarConsultaPorIdentificador(String identificador);
     void cancelarConsulta(String identificador);

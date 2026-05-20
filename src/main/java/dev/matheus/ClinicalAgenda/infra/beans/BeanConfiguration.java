@@ -5,6 +5,7 @@ import dev.matheus.ClinicalAgenda.core.usecases.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+
 @Configuration
 public class BeanConfiguration {
 
@@ -31,6 +32,11 @@ public class BeanConfiguration {
     @Bean
     public AlterarConsultaUseCase alterarConsultaUseCase(ConsultaGateway consultaGateway) {
         return new AlterarConsultaUseCaseImpl(consultaGateway);
+    }
+
+    @Bean
+    public ListarConsultasPaginadasUseCase listarConsultasPaginadasUseCase(ConsultaGateway consultaGateway) {
+        return new ListarConsultasPaginadasUseCaseImpl(consultaGateway);
     }
 
 }

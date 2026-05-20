@@ -1,11 +1,15 @@
 package dev.matheus.ClinicalAgenda.infra.gateway;
 
+import dev.matheus.ClinicalAgenda.core.dtos.PaginaResponse;
 import dev.matheus.ClinicalAgenda.core.entities.Consulta;
 import dev.matheus.ClinicalAgenda.core.gateway.ConsultaGateway;
 import dev.matheus.ClinicalAgenda.infra.mapper.ConsultaEntityMapper;
 import dev.matheus.ClinicalAgenda.infra.persistence.ConsultaEntity;
 import dev.matheus.ClinicalAgenda.infra.persistence.ConsultaRepository;
 import jakarta.transaction.Transactional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -32,6 +36,17 @@ public class ConsultaRepositoryGateway implements ConsultaGateway {
     @Override
     public List<Consulta> listarTodasConsultas() {
         return consultaRepository.findAll().stream().map(consultaEntityMapper::toDomain).toList();
+    }
+
+    @Override
+    public PaginaResponse<Consulta> listarPaginado(int pagina, int tamanho) {
+        Page<ConsultaEntity> page = consultaRepository.findAll(
+                PageRequest.of(pagina, tamanho, Sort.by("dataInicio").descending())
+        );
+        List<Consulta> consultas = page.getContent().stream()
+                .map(consultaEntityMapper::toDomain)
+                .toList();
+        return new PaginaResponse<>(consultas, page.getNumber(), page.getSize(), page.getTotalElements(), page.getTotalPages());
     }
 
     @Override

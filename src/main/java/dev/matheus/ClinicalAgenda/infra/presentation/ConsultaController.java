@@ -1,5 +1,6 @@
 package dev.matheus.ClinicalAgenda.infra.presentation;
 
+import dev.matheus.ClinicalAgenda.core.dtos.PaginaResponse;
 import dev.matheus.ClinicalAgenda.core.entities.Consulta;
 import dev.matheus.ClinicalAgenda.core.usecases.*;
 import dev.matheus.ClinicalAgenda.infra.dtos.ConsultaDTO;
@@ -12,7 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("api/v1/consultas")
@@ -20,20 +20,20 @@ import java.util.stream.Collectors;
 public class ConsultaController {
 
     private final AgendaConsultaUseCase agendarConsultaUseCase;
-    private final ListarConsultasUseCase listarConsultasUseCase;
+    private final ListarConsultasPaginadasUseCase listarConsultasPaginadasUseCase;
     private final BuscarConsultaPorIdentificadorUseCase buscarConsultaUseCase;
     private final CancelarConsultaUseCase cancelarConsultaUseCase;
     private final AlterarConsultaUseCase alterarConsultaUseCase;
     private final ConsultaDTOMapper consultaDTOMapper;
 
     public ConsultaController(AgendaConsultaUseCase agendarConsultaUseCase,
-                            ListarConsultasUseCase listarConsultasUseCase, 
-                            BuscarConsultaPorIdentificadorUseCase buscarConsultaUseCase,
-                            CancelarConsultaUseCase cancelarConsultaUseCase,
-                            AlterarConsultaUseCase alterarConsultaUseCase,
-                            ConsultaDTOMapper consultaDTOMapper) {
+                              ListarConsultasPaginadasUseCase listarConsultasPaginadasUseCase,
+                              BuscarConsultaPorIdentificadorUseCase buscarConsultaUseCase,
+                              CancelarConsultaUseCase cancelarConsultaUseCase,
+                              AlterarConsultaUseCase alterarConsultaUseCase,
+                              ConsultaDTOMapper consultaDTOMapper) {
         this.agendarConsultaUseCase = agendarConsultaUseCase;
-        this.listarConsultasUseCase = listarConsultasUseCase;
+        this.listarConsultasPaginadasUseCase = listarConsultasPaginadasUseCase;
         this.buscarConsultaUseCase = buscarConsultaUseCase;
         this.cancelarConsultaUseCase = cancelarConsultaUseCase;
         this.alterarConsultaUseCase = alterarConsultaUseCase;
@@ -48,7 +48,7 @@ public class ConsultaController {
     }
 
     @PutMapping("/alterar/{identificador}")
-    @Operation(summary = "Alterar dados de uma consulta", description = "Atualiza informações como consultório ou descrição de sintomas de uma consulta existente.")
+    @Operation(summary = "Alterar dados de uma consulta", description = "Atualiza informações de uma consulta existente.")
     public ResponseEntity<ConsultaDTO> alterar(@PathVariable String identificador, @Valid @RequestBody ConsultaDTO consultaDto) {
         Consulta consultaParaAlterar = new Consulta(
                 null,
@@ -69,17 +69,17 @@ public class ConsultaController {
     }
 
     @GetMapping("/listar")
-    @Operation(summary = "Listar todas as consultas", description = "Retorna uma lista com todas as consultas agendadas.")
-    public ResponseEntity<List<ConsultaDTO>> buscarConsultas() {
-        List<ConsultaDTO> consultas = listarConsultasUseCase.execute()
-                .stream()
-                .map(consultaDTOMapper::toDTO)
-                .collect(Collectors.toList());
-        return ResponseEntity.ok(consultas);
+    @Operation(summary = "Listar consultas paginadas", description = "Retorna uma página de consultas, ordenadas por data de início decrescente.")
+    public ResponseEntity<PaginaResponse<ConsultaDTO>> buscarConsultas(
+            @RequestParam(defaultValue = "0") int pagina,
+            @RequestParam(defaultValue = "10") int tamanho) {
+        PaginaResponse<Consulta> resultado = listarConsultasPaginadasUseCase.execute(pagina, tamanho);
+        List<ConsultaDTO> dtos = resultado.conteudo().stream().map(consultaDTOMapper::toDTO).toList();
+        return ResponseEntity.ok(new PaginaResponse<>(dtos, resultado.paginaAtual(), resultado.tamanhoPagina(), resultado.totalElementos(), resultado.totalPaginas()));
     }
 
     @GetMapping("/listar/{identificador}")
-    @Operation(summary = "Buscar consulta por identificador", description = "Retorna os detalhes de uma consulta específica através do seu código único.")
+    @Operation(summary = "Buscar consulta por identificador", description = "Retorna os detalhes de uma consulta específica.")
     public ResponseEntity<ConsultaDTO> buscarPorIdentificador(@PathVariable String identificador) {
         Consulta consulta = buscarConsultaUseCase.execute(identificador);
         return ResponseEntity.ok(consultaDTOMapper.toDTO(consulta));
