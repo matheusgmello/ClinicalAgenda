@@ -5,6 +5,9 @@ import { ConsultaService } from '../../core/services/consulta.service';
 import { ConsultaDTO } from '../../core/models/consulta.model';
 import { DatePipe } from '@angular/common';
 
+const DAYS = ['Domingo', 'Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira', 'Sábado'];
+const MONTHS = ['janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho', 'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'];
+
 @Component({
   selector: 'app-dashboard',
   standalone: true,
@@ -18,9 +21,7 @@ import { DatePipe } from '@angular/common';
         <h1 class="font-display text-4xl font-bold text-text-primary">
           Olá, <em class="not-italic text-gradient">{{ firstName() }}</em>
         </h1>
-        <p class="font-body text-text-secondary mt-2">
-          {{ today | date:'EEEE, d \'de\' MMMM \'de\' y':'':'pt' }}
-        </p>
+        <p class="font-body text-text-secondary mt-2">{{ todayFormatted }}</p>
       </div>
 
       <!-- Stats grid -->
@@ -155,6 +156,10 @@ export class DashboardComponent implements OnInit {
   private consultaService = inject(ConsultaService);
 
   readonly today = new Date();
+  readonly todayFormatted = (() => {
+    const d = new Date();
+    return `${DAYS[d.getDay()]}, ${d.getDate()} de ${MONTHS[d.getMonth()]} de ${d.getFullYear()}`;
+  })();
   readonly loadingConsultas = signal(false);
   readonly recentConsultas = signal<ConsultaDTO[]>([]);
   readonly totalConsultas = signal(0);
