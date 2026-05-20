@@ -6,6 +6,7 @@ import dev.matheus.ClinicalAgenda.core.enums.TipoConsulta;
 import dev.matheus.ClinicalAgenda.core.usecases.*;
 import dev.matheus.ClinicalAgenda.infra.dtos.ConsultaDTO;
 import dev.matheus.ClinicalAgenda.infra.mapper.ConsultaDTOMapper;
+import dev.matheus.ClinicalAgenda.infra.notifications.EmailService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -38,6 +39,8 @@ class ConsultaControllerTest {
     private AlterarConsultaUseCase alterarConsultaUseCase;
     @Mock
     private ConsultaDTOMapper consultaDTOMapper;
+    @Mock
+    private EmailService emailService;
 
     @InjectMocks
     private ConsultaController consultaController;

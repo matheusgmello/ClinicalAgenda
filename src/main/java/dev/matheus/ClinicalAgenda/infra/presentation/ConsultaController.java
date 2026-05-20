@@ -5,6 +5,7 @@ import dev.matheus.ClinicalAgenda.core.entities.Consulta;
 import dev.matheus.ClinicalAgenda.core.usecases.*;
 import dev.matheus.ClinicalAgenda.infra.dtos.ConsultaDTO;
 import dev.matheus.ClinicalAgenda.infra.mapper.ConsultaDTOMapper;
+import dev.matheus.ClinicalAgenda.infra.notifications.EmailService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -25,25 +26,34 @@ public class ConsultaController {
     private final CancelarConsultaUseCase cancelarConsultaUseCase;
     private final AlterarConsultaUseCase alterarConsultaUseCase;
     private final ConsultaDTOMapper consultaDTOMapper;
+    private final EmailService emailService;
 
     public ConsultaController(AgendaConsultaUseCase agendarConsultaUseCase,
                               ListarConsultasPaginadasUseCase listarConsultasPaginadasUseCase,
                               BuscarConsultaPorIdentificadorUseCase buscarConsultaUseCase,
                               CancelarConsultaUseCase cancelarConsultaUseCase,
                               AlterarConsultaUseCase alterarConsultaUseCase,
-                              ConsultaDTOMapper consultaDTOMapper) {
+                              ConsultaDTOMapper consultaDTOMapper,
+                              EmailService emailService) {
         this.agendarConsultaUseCase = agendarConsultaUseCase;
         this.listarConsultasPaginadasUseCase = listarConsultasPaginadasUseCase;
         this.buscarConsultaUseCase = buscarConsultaUseCase;
         this.cancelarConsultaUseCase = cancelarConsultaUseCase;
         this.alterarConsultaUseCase = alterarConsultaUseCase;
         this.consultaDTOMapper = consultaDTOMapper;
+        this.emailService = emailService;
     }
 
     @PostMapping("/agendar")
-    @Operation(summary = "Agendar uma nova consulta", description = "Cria um novo agendamento e gera automaticamente o identificador único.")
+    @Operation(summary = "Agendar uma nova consulta", description = "Cria um novo agendamento e gera automaticamente o identificador único. Envia e-mail de confirmação ao paciente.")
     public ResponseEntity<ConsultaDTO> agendar(@Valid @RequestBody ConsultaDTO consultaDto) {
         Consulta novaConsulta = agendarConsultaUseCase.execute(consultaDTOMapper.toDomain(consultaDto));
+        emailService.enviarConfirmacaoAgendamento(
+                novaConsulta.pacienteEmail(),
+                novaConsulta.pacienteNome(),
+                novaConsulta.identificador(),
+                novaConsulta.dataInicio()
+        );
         return ResponseEntity.status(HttpStatus.CREATED).body(consultaDTOMapper.toDTO(novaConsulta));
     }
 
